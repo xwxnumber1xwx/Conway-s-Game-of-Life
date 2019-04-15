@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Game of Life</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Instructions ENG</a>
+            <a href="https://it.wikipedia.org/wiki/Gioco_della_vita" target="_blank">Instructions ITA</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Game of Life</h1>
+        <p>Select table size</p>
+        <form>
+            <label>X: </label>
+            <input type="number" name="X" maxlength="100" minlength="1" value=10 required autofocus>
+            <label>Y: </label>
+            <input type="number" name="Y" maxlength="100" minlength="1" value=10 required>
+            <button type="button" onclick="setTableParameter(X.value, Y.value)">ok</button>
+        </form>
+        <label for="speed">Speed fast/slow</label>
+        <input type="range" min="10" max="1000" value="500" class="slider" id="speed">
+        <button onclick="startLife()">Start!</button>
+        <button onclick="stopLife()">Stop!</button>
+        <section id="container"></section>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+    </main>
+    <script src="app.js" async defer></script>
+</body>
+
+</html>
