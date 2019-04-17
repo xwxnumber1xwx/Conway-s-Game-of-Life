@@ -15,28 +15,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body id="container">
     <header>
+        <h1 id="title">Game of Life</h1>
         <nav>
-            <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Instructions ENG</a>
-            <a href="https://it.wikipedia.org/wiki/Gioco_della_vita" target="_blank">Instructions ITA</a>
+            <div id="link-container">
+                <a class="header-link" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+                    target="_blank">Instructions ENG</a>
+                <a class="header-link" href="https://it.wikipedia.org/wiki/Gioco_della_vita"
+                    target="_blank">Instructions ITA</a>
+            </div>
         </nav>
     </header>
     <main>
-        <h1>Game of Life</h1>
-        <p>Select table size</p>
-        <form>
-            <label>X: </label>
-            <input type="number" name="X" maxlength="100" minlength="1" value=10 required autofocus>
-            <label>Y: </label>
-            <input type="number" name="Y" maxlength="100" minlength="1" value=10 required>
-            <button type="button" onclick="setTableParameter(X.value, Y.value)">ok</button>
-        </form>
-        <label for="speed">Speed fast/slow</label>
-        <input type="range" min="10" max="1000" value="500" class="slider" id="speed">
-        <button onclick="startLife()">Start!</button>
-        <button onclick="stopLife()">Stop!</button>
-        <section id="container"></section>
+        <h4 class="row">Table settings:</h4>
+        <section class="settings row">
+            <div class="col-6">
+                <span for="speed" id="speed-icon"></span>
+                <input type="range" min="10" max="1000" value="500" class="slider" id="speed">
+            </div>
+
+            <form class="col-6">
+                <label>Rows:
+                    <input type="number" name="x" maxlength="100" minlength="1" value=10 required autofocus>
+                </label>
+                <label>Columns:
+                    <input type="number" name="y" maxlength="100" minlength="1" value=10 required>
+                </label>
+                <button type="button" onclick="setTableParameter(x.value, y.value)">Create it</button>
+            </form>
+
+        </section>
+        <section id="buttons-section" class="row">
+            <div id="buttons-container">
+                <button class="buttons" onclick="startLife()">Start!</button>
+                <button class="buttons" onclick="stopLife()">Stop!</button>
+            </div>
+        </section>
+
+
+        <section id="game-container" class="row"></section>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->

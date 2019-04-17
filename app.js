@@ -1,3 +1,9 @@
+
+/**
+ *
+ *
+ * @class Life
+ */
 class Life {
     constructor(table) {
         this.table = table.slice().map(function (row) { return row.slice(); })
@@ -20,18 +26,30 @@ class Life {
 
 }
 
-setTableParameter = (x, y) => {
-    _tableSize = [x];
-    for (let px = 0; px < x; px++) {
-        _tableSize[px] = new Array();
-        for (let py = 0; py < y; py++) {
-            _tableSize[px].push(0);
+
+/**
+ *build an array width columns any rows
+ *
+ * @param {number} rows
+ * @param {number} col
+ */
+setTableParameter = (rows, col) => {
+    _tableSize = [rows];
+    for (let x = 0; x < rows; x++) {
+        _tableSize[x] = new Array();
+        for (let y = 0; y < col; y++) {
+            _tableSize[x].push(0);
         }
     }
     newLife.setTable(_tableSize);
     createTable(_tableSize);
 }
 
+/**
+ *get an array and build a table in the Dom
+ *
+ * @param {Array} table
+ */
 createTable = (table) => {
     if (_domContainer.childNodes[0]) {
         _domContainer.removeChild(_domContainer.childNodes[0]);
@@ -57,12 +75,15 @@ createTable = (table) => {
     _domContainer.appendChild(tableElement);
 }
 
+/**
+ * sync DOM table --> Array
+ *
+ */
 updateTable = () => {
     if (document.getElementsByTagName('table')) {
         let tb = document.getElementsByTagName('table')[0];
         for (let i = 0; i < tb.childElementCount; i++) {
             for (let x = 0; x < tb.childNodes[i].childElementCount; x++) {
-                //if (tb.childNodes[i].childNodes[x].textContent != _tableClone[i][x]) {
                 if (tb.childNodes[i].childNodes[x].classList.contains('alive')) {
                     newLife.updateValue(i, x, 1);
                 }
@@ -71,10 +92,14 @@ updateTable = () => {
     }
 }
 
+/**
+ *sync Array --> DOM table
+ *
+ * @param {Array} table
+ */
 updateDom = (table) => {
     if (document.getElementsByTagName('table')) {
         let tb = document.getElementsByTagName('table')[0];
-        //if (tb.childElementCount == table.length) {
         for (let i = 0; i < tb.childElementCount; i++) {
             for (let x = 0; x < tb.childNodes[i].childElementCount; x++) {
                 if ((tb.childNodes[i].childNodes[x].classList.contains('alive') && table[i][x] == 0) ||
@@ -83,26 +108,30 @@ updateDom = (table) => {
                 }
             }
         }
-        // } else {
-        //   createTable(table);
-        //}
     }
 }
 
-// Check nearby boxes and return 1 if the box (posX, posY) must be alive in the other case return 0
-moveLife = (table, posX, posY) => {
+/**
+ * Check nearby boxes and return 1 if the box (rows, columns) must be alive in the other case return 0
+ *
+ * @param {Array} table whole table
+ * @param {number} rows position to check nearby boxes
+ * @param {number} columns position to check nearby boxes
+ * @returns {number} 1 if the box must be alive, 0 if died
+ */
+moveLife = (table, rows, columns) => {
     let alive = false;
     let neighbor = 0;
-    if (table[posX][posY] === 1) {
+    if (table[rows][columns] === 1) {
         alive = true;
     }
     // check nearby boxes if they are alive
-    for (let x = posX - 1; x <= posX + 1; x++) {
-        if (x >= 0 && x < table[posX].length) {
-            for (let y = posY - 1; y <= posY + 1; y++) {
-                if (y >= 0 && y < table[posY].length) {
+    for (let x = rows - 1; x <= rows + 1; x++) {
+        if (x >= 0 && x < table[rows].length) {
+            for (let y = columns - 1; y <= columns + 1; y++) {
+                if (y >= 0 && y < table[columns].length) {
                     // check if the loop are looking the same box and not the neighbor
-                    if (x != posX || y != posY) {
+                    if (x != rows || y != columns) {
                         if (table[x][y] === 1) {
                             neighbor++;
                         }
@@ -125,9 +154,13 @@ moveLife = (table, posX, posY) => {
 }
 
 
-const _domContainer = document.getElementById('container');
+const _domContainer = document.getElementById('game-container');
 const speed = document.getElementById('speed');
 
+/**
+ * it stop if the user changing the speed.
+ *
+ */
 speed.oninput = ()=> {
     stopLife();
     startLife();
@@ -137,21 +170,31 @@ let _tableSize = [];
 let newLife = new Life(_tableSize);
 let interval;
 
+/**
+ * scan whole table and apply the rules (calling moveLife());
+ *
+ */
 checkEveryElementOnTable = () => {
     let tb = newLife.getTable().slice().map(function (row) { return row.slice(); })
-    for (let x = 0; x < tb.length; x++) {
-        for (let y = 0; y < tb[x].length; y++) {
-            let result = moveLife(tb, x, y);
-            newLife.updateValue(x, y, result);
+    for (let rows = 0; rows < tb.length; rows++) {
+        for (let col = 0; col < tb[rows].length; col++) {
+            let result = moveLife(tb, rows, col);
+            newLife.updateValue(rows, col, result);
         }
     }
 }
-
+/**
+ *function for the interval loop
+ *it check every element and then update the DOM
+ */
 core = () => {
     checkEveryElementOnTable();
     updateDom(newLife.getTable());
 }
 
+/**
+ * start the interval
+*/
 startLife = () => {
     if (_tableSize.length > 0) {
         updateTable();
@@ -162,6 +205,12 @@ startLife = () => {
 
 }
 
+/**
+ * stop the interval
+*/
 stopLife = () => {
     clearInterval(interval);
 };
+
+// create a first table 10x10
+setTableParameter(10,10);
